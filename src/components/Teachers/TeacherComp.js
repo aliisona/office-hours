@@ -1,6 +1,5 @@
 import anon from '../Images/anon.png'; 
 import axios from "axios";
-import React, {useState} from "react";
 
 const cardStyles = {
     container: {
@@ -51,14 +50,14 @@ export default function TeacherComp(props) {
   const setTeacherID = async () => {
     try {
       let data = JSON.stringify({
-          "id" : props.id
+          id: props.id
       });
       
       console.log("update teacher ID called")
       console.log(props.id)
       console.log(data)
 
-          let result = await axios.post(`http://localhost:3001/api/teacherID/${props.id}`, data, {headers:{"Content-Type" : "application/json"}});
+          await axios.post(`http://localhost:3001/api/teacherID/${props.id}`, data, {headers:{"Content-Type" : "application/json"}});
           console.log("POST request sent")
 
       } catch (error) {
@@ -87,7 +86,7 @@ export default function TeacherComp(props) {
             <button style={cardStyles.buttonS} onClick={ () => {
               setTeacherID();              
             }}>
-              Schedule meeting
+              Schedule
             </button>
             </a>
           </div>

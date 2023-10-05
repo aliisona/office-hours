@@ -3,6 +3,7 @@ import ReactCalendar from 'react-calendar'
 import React from 'react'
 import './Calendar.css'
 import axios from "axios";
+import dayjs from 'dayjs';
 
 
 interface indexProps {}
@@ -12,53 +13,55 @@ interface DateType{
     dateTime: Date | null
 }
 
-export const EARLIEST_TIME = 9
-export const LATEST_TIME = 17
-export const INTERVAL = 30
-
-const Calendar: FC<indexProps> = ({}) => {
+const Calendar: FC<indexProps> = (_) => {
     
     const [date, setDate] = useState<DateType>( {
         justDate: null,
         dateTime: null,
     })
 
-    const [teacherID, setTeacherID] = useState('0');
+    const [teacherID, setTeacherID] = useState(1);
+    
     const getTeacherID = async () => {
         const {data} = await axios.get(`http://localhost:3001/api/teacherID/`);
         setTeacherID(data)
     }
 
-    getTeacherID()
-
     const [teacherName, setTeacherName] = useState("");
 
     const getTeacherName = async () => {
-      const {data} = await axios.get(`http://localhost:3001/api/teacherName/${teacherID}`);    
+      const {data} = await axios.get(`http://localhost:3001/api/teacherName/`);    
       setTeacherName(data)
-      
     }
-    getTeacherName()
 
     const [times, setTeacherAvail] = useState([]);
 
     const getTeacherAvail = async () => {
-        const {data} = await axios.get(`http://localhost:3001/api/teacherAvail/${teacherID}`);    
+        // console.log("frontend id (AVAIL): " + teacherID)
+        const {data} = await axios.get(`http://localhost:3001/api/teacherAvail/`);    
         setTeacherAvail(data)
-
     }
 
+    //next iter TODO
+  
+    useEffect(() => {
+        getTeacherID()
+        getTeacherName()
+        getTeacherAvail()
+       
+    }, []);
 
     //send created times list to backend, send back in forth
 
-    const book = async (time: String) => {
+    const book = async (date : String, time: String) => {
         try {
             let data = JSON.stringify({
+                date : date,
                 time: time
             });
             
             console.log("send times called");
-            await axios.post(`http://localhost:3001/api/book/${teacherID}/${time}`, data, {headers:{"Content-Type" : "application/json"}});
+            await axios.post(`http://localhost:3001/api/book/${teacherID}/${date}/${time}`, data, {headers:{"Content-Type" : "application/json"}});
             console.log("POST request for times sent");
         } catch (error) {
             console.log("error found");
@@ -66,9 +69,6 @@ const Calendar: FC<indexProps> = ({}) => {
         }
     
     }
-
-    getTeacherAvail()
-    
 
     return (<div className = 'h-screen flex flex-col justify-center items-center'> 
         <div className = 'p-6 flex flex-col justify-center items-center'> 
@@ -82,8 +82,11 @@ const Calendar: FC<indexProps> = ({}) => {
                         <button className = 'p5 flex flex-col' type='button'  
                             onClick ={ 
                                 () => { 
-                                    book(time)
+                                    let selectDate=dayjs(date.justDate).format('DD-MM-YYYY')
+                                    book(selectDate, time)
+                                    getTeacherAvail()
                                     console.log(times)  
+                                    window.location.reload();
                                 }
                                 }> 
                             {
@@ -105,7 +108,6 @@ const Calendar: FC<indexProps> = ({}) => {
             view='month' 
             onClickDay={
                 (date) => setDate((prev) => ({...prev, justDate:date}))
-
             }
             />)
         }

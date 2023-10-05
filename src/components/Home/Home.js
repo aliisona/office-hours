@@ -31,7 +31,7 @@ useEffect(() => { //get requested once
   <div className = 'h-screen flex flex-col items-center'> 
       <h1 className = 'p-6 font-semibold'> Your schedule </h1>
       <div>       
-        <p>  To schedule a meeting, go to the teacher's tab and select a teacher. Then, go to the calendar tab to view their schedule. </p>
+        <p>  To schedule a meeting, go to the Teachers tab and select a teacher. </p>
         <button className = 'p5 flex flex-col rounded-sm bg-gray-100 p-2' type='button' 
                             onClick ={ 
                                 () => { 
