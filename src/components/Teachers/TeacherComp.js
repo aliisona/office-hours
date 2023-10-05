@@ -4,6 +4,7 @@ import React, {useState} from "react";
 
 const cardStyles = {
     container: {
+      backgroundColor: "#B79D94",
       padding: 50,
       margin: 20,
       display: "flex",
@@ -15,11 +16,7 @@ const cardStyles = {
       borderRadius: 20,
     },
     profilePicture: {
-      // display: "flex",
-      // justifyContent: "center",
-      // alignItems: "center",
-      // backgroundColor: "orange",
-      // color: "white",
+  
       height: 170,
       width: 370,
       borderRadius: "20%",

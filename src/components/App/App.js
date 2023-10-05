@@ -9,6 +9,7 @@ import Teachers from '../Teachers/Teachers'
 export default function App() {
     return (
         <>
+        <div className = 'bg-#CDD3CE'> 
         <NavBar />
        <Routes>
           <Route path="/" element={<Home />} />
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/Teachers" element={<Teachers />} />
           <Route path="/calendar" element={<Calendar />} />
        </Routes>
+       </div>
     </>
     )
 }

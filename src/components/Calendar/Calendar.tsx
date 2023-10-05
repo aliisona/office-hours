@@ -51,14 +51,14 @@ const Calendar: FC<indexProps> = ({}) => {
 
     //send created times list to backend, send back in forth
 
-    const book = async (time) => {
+    const book = async (time: String) => {
         try {
             let data = JSON.stringify({
                 time: time
             });
             
             console.log("send times called");
-            let result = await axios.post(`http://localhost:3001/api/book/${teacherID}/${time}`, data, {headers:{"Content-Type" : "application/json"}});
+            await axios.post(`http://localhost:3001/api/book/${teacherID}/${time}`, data, {headers:{"Content-Type" : "application/json"}});
             console.log("POST request for times sent");
         } catch (error) {
             console.log("error found");
@@ -77,15 +77,12 @@ const Calendar: FC<indexProps> = ({}) => {
         </div>
         { date.justDate ? 
             <div className = 'flex gap-4'> 
-            
-            
                 {times.map((time, i) => (
                     <div key={`time-${i}`} className = 'rounded-sm bg-gray-100 p-2'> 
                         <button className = 'p5 flex flex-col' type='button'  
                             onClick ={ 
                                 () => { 
                                     book(time)
-                                    getTeacherAvail()
                                     console.log(times)  
                                 }
                                 }> 
@@ -108,6 +105,7 @@ const Calendar: FC<indexProps> = ({}) => {
             view='month' 
             onClickDay={
                 (date) => setDate((prev) => ({...prev, justDate:date}))
+
             }
             />)
         }

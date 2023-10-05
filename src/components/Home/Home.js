@@ -36,7 +36,8 @@ useEffect(() => { //get requested once
                             onClick ={ 
                                 () => { 
                                   clearMeetings()
-
+                                  getScheduledMeetings()
+                                  window.location.reload(true);
                                 }
                                 }> 
                             {
